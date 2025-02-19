@@ -19,25 +19,30 @@
         /// <param name="n"></param>
         /// <returns></returns>
         bool IsPrime(int n);
+
+        /// <summary> Get all prime numbers less than N </summary>
+        IEnumerable<int> GetPrimes()
+        {
+            return PrimeHelper.GetPrimes(this);
+        }
+
     }
 
     public static class PrimeHelper
     {
-        public static int[] GetPrimes(this IPrime uut)
+        public static IEnumerable<int> GetPrimes(this IPrime uut)
         {
-            List<int> result = [];
             for (int i = 1; i < uut.N; ++i)
             {
                 if (uut.IsPrime(i))
                 {
-                    result.Add(i);
+                    yield return i;
                 }
             }
-            return result.ToArray();
         }
         public static int CountPrimes(this IPrime uut)
         {
-            return uut.GetPrimes().Length;
+            return uut.GetPrimes().Count();
         }
     }
 }

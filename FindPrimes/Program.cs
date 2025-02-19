@@ -6,9 +6,17 @@ namespace FindPrimes
     {
         static void Main(string[] _)
         {
-            RunSearch<Definition>(100);
-            RunCount<Definition>(1_000);
-            var __ = BenchmarkRunner.Run<Benchmark>(Benchmark.CreateConfig());
+            bool test = true;
+            bool bench = !test;
+            if (test)
+            {
+                RunSearch<Definition>(100);
+                RunCount<Definition>(1_000);
+            }
+            if(bench)
+            {
+                var __ = BenchmarkRunner.Run<Benchmark>(Benchmark.CreateConfig());
+            }
         }
 
         private static void RunSearch<TSearch>(int n) where TSearch : IPrime, new()
