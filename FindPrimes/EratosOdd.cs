@@ -22,14 +22,13 @@ class EratosOdd : IPrime
     public void Initialize()
     {
         _sieve = new Sieve(N, true);
-        //_sieve[0] = false;
         _sieve[1] = false;
         var limit = (int)Math.Sqrt(N) + 1;
-        for (int i = 3; i <= limit; i += 2)
+        for (int i = 3; i < limit; i += 2)
         {
             if (_sieve[i])
             {
-                for (int j = i * i; j < N; j += 2 * i)
+                for (int j = i * i; 0 < j && j < N; j += 2 * i)
                 {
                     _sieve[j] = false;
                 }

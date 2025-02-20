@@ -48,7 +48,7 @@ namespace FindPrimes
             return uut.CountPrimes();
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int EratosOdd()
         {
             var uut = new EratosOdd(N);
