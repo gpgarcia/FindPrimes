@@ -17,17 +17,41 @@ namespace FindPrimes
     {
         const int MAX = 2_147_483_591; // int.MaxValue - 56;
 
-        [Params(10, 100, 1_000)]
+        [Params(100, 10_000, 1_000_000)]
         //for those that are fast and memory effecent
         //[Params(1_000_000, 100_000_000, MAX)]
         public int N { get; set; }
 
 
 
+        //[Benchmark]
+        //public int Definition()
+        //{
+        //    var uut = new Definition(N);
+        //    uut.Initialize();
+        //    return uut.CountPrimes();
+        //}
+
         [Benchmark]
-        public int Definition()
+        public int Eratosthenes()
         {
-            var uut = new Definition(N);
+            var uut = new Eratosthenes(N);
+            uut.Initialize();
+            return uut.CountPrimes();
+        }
+
+        [Benchmark]
+        public int EulerList()
+        {
+            var uut = new EulerList(N);
+            uut.Initialize();
+            return uut.CountPrimes();
+        }
+
+        [Benchmark]
+        public int EratosOdd()
+        {
+            var uut = new EratosOdd(N);
             uut.Initialize();
             return uut.CountPrimes();
         }

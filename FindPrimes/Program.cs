@@ -6,12 +6,22 @@ namespace FindPrimes
     {
         static void Main(string[] _)
         {
-            bool test = true;
+            bool test = false;
             bool bench = !test;
             if (test)
             {
                 RunSearch<Definition>(100);
                 RunCount<Definition>(1_000);
+
+                RunSearch<Eratosthenes>(100);
+                RunCount<Eratosthenes>(1_000);
+
+                RunSearch<EulerList>(100);
+                RunCount<EulerList>(1_000);
+
+                RunSearch<EratosOdd>(100);
+                RunCount<EratosOdd>(1_000);
+
             }
             if(bench)
             {
