@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections;
 
 namespace FindPrimes;
 
@@ -13,27 +14,32 @@ class Sieve : IEnumerable<bool>
     public int Count => 2 * _sieve.Count;
 
 
-    public Sieve(int length)
+    public Sieve(long length)
         : this(length, false)
     { }
 
-    public Sieve(int length, bool defaultValue)
+    public Sieve(long length, bool defaultValue)
     {
-        _sieve = new BitArray(length / 2, defaultValue);
+        if((length & 1L) == 1L)
+        {
+            length -= 1L; // make it even
+        }
+        var len = (int)(length / 2L);
+        _sieve = new BitArray(len, defaultValue);
     }
 
-    public bool Get(int i)
+    public bool Get(long i)
     {
         bool result = false;
         if ((i & 1) == 1)  //isOdd
         {
-            result = _sieve[(i - 1) / 2];
+            result = _sieve[(int)((i - 1) / 2)];
         }
         return result;
     }
-    public void Set(int i, bool value)
+    public void Set(long i, bool value)
     {
-        _sieve[(i - 1) / 2] = value;
+        _sieve[(int)((i - 1) / 2)] = value;
     }
 
     public IEnumerator<bool> GetEnumerator()
@@ -46,7 +52,7 @@ class Sieve : IEnumerable<bool>
         return GetEnumerator();
     }
 
-    public bool this[int index]
+    public bool this[long index]
     {
         get => Get(index);
         set => Set(index, value);
@@ -58,7 +64,7 @@ class Sieve : IEnumerable<bool>
 class SieveEnumerator : IEnumerator<bool>
 {
     private Sieve _sieve;
-    private int _index = -1;
+    private long _index = -1;
     public SieveEnumerator(Sieve sieve)
     {
         _sieve = sieve;

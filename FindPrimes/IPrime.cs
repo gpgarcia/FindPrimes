@@ -5,7 +5,7 @@
         /// <summary>
         /// Will find primes less than this number
         /// </summary>
-        int N { get; init; }
+        long N { get; init; }
 
         /// <summary>
         /// Run one time initialization
@@ -18,10 +18,10 @@
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        bool IsPrime(int n);
+        bool IsPrime(long n);
 
         /// <summary> Get all prime numbers less than N </summary>
-        IEnumerable<int> GetPrimes()
+        IEnumerable<long> GetPrimes()
         {
             return PrimeHelper.GetPrimes(this);
         }
@@ -30,9 +30,9 @@
 
     public static class PrimeHelper
     {
-        public static IEnumerable<int> GetPrimes(this IPrime uut)
+        public static IEnumerable<long> GetPrimes(this IPrime uut)
         {
-            for (int i = 1; i < uut.N; ++i)
+            for (long i = 1; i < uut.N; ++i)
             {
                 if (uut.IsPrime(i))
                 {
@@ -40,7 +40,7 @@
                 }
             }
         }
-        public static int CountPrimes(this IPrime uut)
+        public static long CountPrimes(this IPrime uut)
         {
             return uut.GetPrimes().Count();
         }

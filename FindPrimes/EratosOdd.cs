@@ -13,11 +13,11 @@ class EratosOdd : IPrime
     public EratosOdd()
         : this(10)
     { }
-    public EratosOdd(int n)
+    public EratosOdd(long n)
     {
         N = n;
     }
-    public int N { get; init; }
+    public long N { get; init; }
 
     public void Initialize()
     {
@@ -35,7 +35,7 @@ class EratosOdd : IPrime
             }
         }
     }
-    public bool IsPrime(int n)
+    public bool IsPrime(long n)
     {
         if (n == 2)
         {

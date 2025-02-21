@@ -15,43 +15,51 @@ namespace FindPrimes
     [MemoryDiagnoser]
     public class Benchmark
     {
-        const int MAX = 2_147_483_591; // int.MaxValue - 56;
+        const int MAX = 2_147_483_591; // Array.MaxLenght = int.MaxValue - 56;
 
-        [Params(100, 10_000, 1_000_000)]
+        //[Params(100, 10_000, 1_000_000)]
         //for those that are fast and memory effecent
-        //[Params(1_000_000, 100_000_000, MAX)]
-        public int N { get; set; }
+        [Params(1_000_000, 100_000_000, MAX)]
+        public long N { get; set; }
 
 
 
         //[Benchmark]
-        //public int Definition()
+        //public long Definition()
         //{
         //    var uut = new Definition(N);
         //    uut.Initialize();
         //    return uut.CountPrimes();
         //}
 
-        [Benchmark]
-        public int Eratosthenes()
-        {
-            var uut = new Eratosthenes(N);
-            uut.Initialize();
-            return uut.CountPrimes();
-        }
-
-        [Benchmark]
-        public int EulerList()
-        {
-            var uut = new EulerList(N);
-            uut.Initialize();
-            return uut.CountPrimes();
-        }
-
         [Benchmark(Baseline = true)]
-        public int EratosOdd()
+        public long Eratosthenes()
+        {
+            var uut = new Eratosthenes4(N);
+            uut.Initialize();
+            return uut.CountPrimes();
+        }
+
+        //[Benchmark]
+        //public long EulerList()
+        //{
+        //    var uut = new EulerList(N);
+        //    uut.Initialize();
+        //    return uut.CountPrimes();
+        //}
+
+        [Benchmark]
+        public long EratosOdd()
         {
             var uut = new EratosOdd(N);
+            uut.Initialize();
+            return uut.CountPrimes();
+        }
+
+        [Benchmark]
+        public long SegmentedSieve()
+        {
+            var uut = new SegmentedSieve(N);
             uut.Initialize();
             return uut.CountPrimes();
         }

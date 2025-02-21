@@ -11,11 +11,44 @@ namespace FindPrimes
             bool bench = !test;
             if (test)
             {
+                Console.WriteLine($"int.MaxValue=   {int.MaxValue}");
+                Console.WriteLine($"Array.MaxLength={Array.MaxLength}");
                 RunSearch<Definition>(100);
                 RunCount<Definition>(1_000);
 
-                RunSearch<Eratosthenes>(100);
-                RunCount<Eratosthenes>(1_000);
+
+                RunSearch<Eratosthenes1>(100);
+                RunCount<Eratosthenes1>(1_000);
+
+                RunSearch<Eratosthenes2>(100);
+                RunCount<Eratosthenes2>(1_000);
+                RunCount<Eratosthenes2>(10_000);
+
+                RunSearch<Eratosthenes3>(100);
+                RunCount<Eratosthenes3>(1_000);
+                RunCount<Eratosthenes3>(10_000);
+                try
+                {
+                    RunCount<Eratosthenes3>(2_147_483_591 + 1);
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    Console.WriteLine($"N={2_147_483_591 + 1}, {ex.Message}");
+                }
+                RunSearch<Eratosthenes4>(100);
+                RunCount<Eratosthenes4>(1_000);
+                RunCount<Eratosthenes4>(10_000);
+                RunCount<Eratosthenes4>(10_000_000);
+                RunCount<Eratosthenes4>(2_147_483_591 + 1);
+                //RunCount<Eratosthenes4>(2L * (long)Array.MaxLength +1L);
+                try
+                {
+                    RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 2L);
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    Console.WriteLine($"N={2L * (long)Array.MaxLength + 2L}, {ex.Message}");
+                }
 
                 RunSearch<EulerList>(100);
                 RunCount<EulerList>(1_000);
@@ -25,13 +58,23 @@ namespace FindPrimes
                 RunCount<EratosOdd>(1_000);
                 RunCount<EratosOdd>(10_000);
                 RunCount<EratosOdd>(10_000_000);
-                RunCount<EratosOdd>(2_147_483_591);
-                RunCount<EratosOdd>(int.MaxValue);
+                RunCount<EratosOdd>(Array.MaxLength + 1);
+                //RunCount<EratosOdd>(2L * (long)Array.MaxLength + 1L);
+                //RunCount<EratosOdd>(2L * (long)int.MaxValue + 1L);
+                try
+                {
+                    RunCount<EratosOdd>(2L * (long)int.MaxValue + 2L);
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine($"N={2L * (long)int.MaxValue + 2L}, {ex.Message}");
+                }
 
                 RunSearch<SegmentedSieve>(100);
                 RunCount<SegmentedSieve>(1_000);
                 RunCount<SegmentedSieve>(10_000);
                 RunCount<SegmentedSieve>(10_000_000);
+                //RunCount<SegmentedSieve>(2L * (long)int.MaxValue + 1L);
 
             }
             if (bench)
@@ -40,7 +83,7 @@ namespace FindPrimes
             }
         }
 
-        private static void RunSearch<TSearch>(int n) where TSearch : IPrime, new()
+        private static void RunSearch<TSearch>(long n) where TSearch : IPrime, new()
         {
             var sw = Stopwatch.StartNew();
             var uut = new TSearch { N = n };
@@ -54,7 +97,7 @@ namespace FindPrimes
             Console.WriteLine($"Elapsed: {sw.Elapsed.TotalMilliseconds} mSec");
         }
 
-        private static void RunCount<TSearch>(int n) where TSearch : IPrime, new()
+        private static void RunCount<TSearch>(long n) where TSearch : IPrime, new()
         {
             var sw = Stopwatch.StartNew();
             var uut = new TSearch { N = n };
