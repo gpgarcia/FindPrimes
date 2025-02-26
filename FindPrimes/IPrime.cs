@@ -16,6 +16,7 @@
         /// Determine if the number n is prime. N must be less than N.
         /// Prime number have exactly 2 factors 1 and itself.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">n must be less than N</exception>"
         /// <param name="n"></param>
         /// <returns></returns>
         bool IsPrime(long n);

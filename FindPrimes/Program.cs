@@ -13,6 +13,7 @@ namespace FindPrimes
             {
                 Console.WriteLine($"int.MaxValue=   {int.MaxValue}");
                 Console.WriteLine($"Array.MaxLength={Array.MaxLength}");
+                RunCount<Definition>(1);
                 RunSearch<Definition>(100);
                 RunCount<Definition>(1_000);
 
@@ -35,11 +36,12 @@ namespace FindPrimes
                 {
                     Console.WriteLine($"N={2_147_483_591 + 1}, {ex.Message}");
                 }
+                RunCount<Eratosthenes4>(1);
                 RunSearch<Eratosthenes4>(100);
                 RunCount<Eratosthenes4>(1_000);
                 RunCount<Eratosthenes4>(10_000);
                 RunCount<Eratosthenes4>(10_000_000);
-                RunCount<Eratosthenes4>(2_147_483_591 + 1);
+                //RunCount<Eratosthenes4>(2_147_483_591 + 1);
                 //RunCount<Eratosthenes4>(2L * (long)Array.MaxLength +1L);
                 try
                 {
@@ -58,7 +60,7 @@ namespace FindPrimes
                 RunCount<EratosOdd>(1_000);
                 RunCount<EratosOdd>(10_000);
                 RunCount<EratosOdd>(10_000_000);
-                RunCount<EratosOdd>(Array.MaxLength + 1);
+                //RunCount<EratosOdd>(Array.MaxLength + 1);
                 //RunCount<EratosOdd>(2L * (long)Array.MaxLength + 1L);
                 //RunCount<EratosOdd>(2L * (long)int.MaxValue + 1L);
                 try

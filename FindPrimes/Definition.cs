@@ -18,6 +18,10 @@ public class Definition : IPrime
 
     public bool IsPrime(long n)
     {
+        if (n >= N)
+        {
+            throw new ArgumentOutOfRangeException(nameof(n), $"n={n} has to be less than N={N}");
+        }
         if (n == 0) return false;
         if (n == 1) return false;
         for (long i = 2; i <= n / 2; ++i)

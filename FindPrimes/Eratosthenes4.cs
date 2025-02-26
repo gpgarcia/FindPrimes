@@ -39,7 +39,6 @@ class Eratosthenes4 : IPrime
     {
         _sieve = new bool[N / 2];
         Array.Fill(_sieve, true);
-        _sieve[0] = false;  //1 is not prime
 
         long limit = (long)Math.Sqrt(N);
         for (long i = 3; i <= limit; i += 2)  //odd numbers only
@@ -56,6 +55,10 @@ class Eratosthenes4 : IPrime
 
     public bool IsPrime(long n)
     {
+        if (n >= N)
+        {
+            throw new ArgumentOutOfRangeException(nameof(n), $"n={n} has to be less than N={N}");
+        }
         if (n == 2)
         {
             return true;
