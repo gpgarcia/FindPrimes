@@ -15,17 +15,17 @@ namespace FindPrimes
     [MemoryDiagnoser]
     public class Benchmark
     {
-        const int MAX = 2_147_483_591; // int.MaxValue - 56;
+        const long MAX = 2_147_483_591; // int.MaxValue - 56;
 
         [Params(10, 100, 1_000)]
         //for those that are fast and memory effecent
         //[Params(1_000_000, 100_000_000, MAX)]
-        public int N { get; set; }
+        public long N { get; set; }
 
 
 
         [Benchmark]
-        public int Definition()
+        public long Definition()
         {
             var uut = new Definition(N);
             uut.Initialize();

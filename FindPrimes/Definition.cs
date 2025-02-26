@@ -6,21 +6,25 @@ public class Definition : IPrime
         : this(10)
     { }
 
-    public Definition(int n)
+    public Definition(long n)
     {
         N = n;
     }
 
-    public int N { get; init; }
+    public long N { get; init; }
 
     public void Initialize()
     { }
 
-    public bool IsPrime(int n)
+    public bool IsPrime(long n)
     {
+        if (n >= N)
+        {
+            throw new ArgumentOutOfRangeException(nameof(n), $"n={n} has to be less than N={N}");
+        }
         if (n == 0) return false;
         if (n == 1) return false;
-        for (int i = 2; i <= n / 2; ++i)
+        for (long i = 2; i <= n / 2; ++i)
         {
             if (n % i == 0)
             {
