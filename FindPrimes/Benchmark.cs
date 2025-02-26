@@ -15,7 +15,7 @@ namespace FindPrimes
     [MemoryDiagnoser]
     public class Benchmark
     {
-        const int MAX = 2_147_483_591; // Array.MaxLenght = int.MaxValue - 56;
+        const long MAX = 2_147_483_591; // Array.MaxLenght = int.MaxValue - 56;
 
         [Params(100, 10_000, 100_000)]
         //for those that are fast and memory effecent

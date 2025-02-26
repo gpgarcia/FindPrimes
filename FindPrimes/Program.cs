@@ -7,7 +7,7 @@ namespace FindPrimes
     {
         static void Main(string[] _)
         {
-            bool test = true;
+            bool test = false;
             bool bench = !test;
             if (test)
             {
