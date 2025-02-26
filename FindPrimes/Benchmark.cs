@@ -17,20 +17,20 @@ namespace FindPrimes
     {
         const int MAX = 2_147_483_591; // Array.MaxLenght = int.MaxValue - 56;
 
-        //[Params(100, 10_000, 1_000_000)]
+        [Params(100, 10_000, 100_000)]
         //for those that are fast and memory effecent
-        [Params(1_000_000, 100_000_000, MAX)]
+        //[Params(1_000_000, 100_000_000, MAX)]
         public long N { get; set; }
 
 
 
-        //[Benchmark]
-        //public long Definition()
-        //{
-        //    var uut = new Definition(N);
-        //    uut.Initialize();
-        //    return uut.CountPrimes();
-        //}
+        [Benchmark]
+        public long Definition()
+        {
+            var uut = new Definition(N);
+            uut.Initialize();
+            return uut.CountPrimes();
+        }
 
         [Benchmark(Baseline = true)]
         public long Eratosthenes()
