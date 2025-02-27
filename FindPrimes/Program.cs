@@ -38,26 +38,26 @@ namespace FindPrimes
                 //    Console.WriteLine($"N={2_147_483_591 + 1}, {ex.Message}");
                 //}
 
-                //RunCount<Eratosthenes4>(1);
-                //RunSearch<Eratosthenes4>(100);
-                //RunCount<Eratosthenes4>(1_000);
-                //RunCount<Eratosthenes4>(10_000);
-                //RunCount<Eratosthenes4>(10_000_000);
-                ////RunCount<Eratosthenes4>(2_147_483_591 + 1);
-                ////RunCount<Eratosthenes4>(2L * (long)Array.MaxLength +1L);
-                //try
-                //{
-                //    RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 2L);
-                //}
-                //catch (OutOfMemoryException ex)
-                //{
-                //    Console.WriteLine($"N={2L * (long)Array.MaxLength + 2L}, {ex.Message}");
-                //}
+                RunCount<Eratosthenes4>(1);
+                RunSearch<Eratosthenes4>(100);
+                RunCount<Eratosthenes4>(1_000);
+                RunCount<Eratosthenes4>(10_000);
+                RunCount<Eratosthenes4>(10_000_000);
+                //RunCount<Eratosthenes4>(2_147_483_591 + 1);
+                //RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 1L);
+                try
+                {
+                    RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 2L);
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    Console.WriteLine($"N={2L * (long)Array.MaxLength + 2L}, {ex.Message}");
+                }
 
-                RunCount<Pritchard>(1);
-                RunSearch<Pritchard>(100);
-                RunCount<Pritchard>(1_000);
-                RunCount<Pritchard>(10_000);
+                RunCount<Pritchard1>(1);
+                RunSearch<Pritchard1>(100);
+                RunCount<Pritchard1>(1_000);
+                RunCount<Pritchard1>(10_000);
                 //RunCount<Pritchard>(10_000_000);
 
                 //RunSearch<EulerList>(100);
