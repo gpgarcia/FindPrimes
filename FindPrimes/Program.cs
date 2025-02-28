@@ -42,6 +42,7 @@ namespace FindPrimes
                 RunSearch<Eratosthenes4>(100);
                 RunCount<Eratosthenes4>(1_000);
                 RunCount<Eratosthenes4>(10_000);
+                RunCount<Eratosthenes4>(100_000);
                 RunCount<Eratosthenes4>(10_000_000);
                 //RunCount<Eratosthenes4>(2_147_483_591 + 1);
                 //RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 1L);
@@ -54,11 +55,19 @@ namespace FindPrimes
                     Console.WriteLine($"N={2L * (long)Array.MaxLength + 2L}, {ex.Message}");
                 }
 
-                RunCount<Pritchard1>(1);
+                //RunCount<Pritchard1>(1);
                 RunSearch<Pritchard1>(100);
                 RunCount<Pritchard1>(1_000);
                 RunCount<Pritchard1>(10_000);
-                //RunCount<Pritchard>(10_000_000);
+                RunCount<Pritchard1>(100_000);
+
+                RunCount<Pritchard2>(1);
+                RunSearch<Pritchard2>(100);
+                RunCount<Pritchard2>(1_000);
+                RunCount<Pritchard2>(10_000);
+                RunCount<Pritchard2>(100_000);
+                RunCount<Pritchard2>(10_000_000);
+                //RunCount<Pritchard2>(2L * (long)Array.MaxLength + 1L); /// > 4 hours :-(
 
                 //RunSearch<EulerList>(100);
                 //RunCount<EulerList>(1_000);

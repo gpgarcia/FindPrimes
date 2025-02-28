@@ -12,6 +12,13 @@ class Pritchard1 : IPrime
 
     public long N { get; init; }
 
+    public Pritchard1()
+    : this(10)
+    { }
+    public Pritchard1(long n)
+    {
+        N = n;
+    }
     public void Initialize()
     {
         List<long> wheel = [1];
@@ -51,7 +58,6 @@ class Pritchard1 : IPrime
         }
     }
 
-
     private static long Extend(List<long> W, long length, long n)
     {
         long w = 1;
@@ -74,7 +80,6 @@ class Pritchard1 : IPrime
     {
         return w[w.IndexOf(y) - 1];
     }
-
 
     public bool IsPrime(long n)
     {

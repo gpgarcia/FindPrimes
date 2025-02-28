@@ -21,6 +21,7 @@ namespace FindPrimes;
 /// 
 /// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode 
 /// 
+/// TODO: https://stackoverflow.com/questions/1569393/c-how-to-make-sieve-of-atkin-incremental/20559687#20559687 
 /// </remarks>
 class Eratosthenes4 : IPrime
 {
@@ -58,6 +59,10 @@ class Eratosthenes4 : IPrime
         if (n >= N)
         {
             throw new ArgumentOutOfRangeException(nameof(n), $"n={n} has to be less than N={N}");
+        }
+        if (n == 1)
+        {
+            return false;
         }
         if (n == 2)
         {
