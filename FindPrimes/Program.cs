@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using Microsoft.Diagnostics.Runtime.Utilities;
 using System.Diagnostics;
 
 namespace FindPrimes
@@ -11,8 +12,10 @@ namespace FindPrimes
             bool bench = !test;
             if (test)
             {
+                Console.WriteLine($"Environment.ProcessorCount={Environment.ProcessorCount}");
                 Console.WriteLine($"int.MaxValue=   {int.MaxValue}");
                 Console.WriteLine($"Array.MaxLength={Array.MaxLength}");
+                Console.WriteLine();
 
                 //RunCount<Definition>(1);
                 //RunSearch<Definition>(100);
@@ -43,7 +46,9 @@ namespace FindPrimes
                 RunCount<Eratosthenes4>(1_000);
                 RunCount<Eratosthenes4>(10_000);
                 RunCount<Eratosthenes4>(100_000);
+                RunCount<Eratosthenes4>(1_000_000);
                 RunCount<Eratosthenes4>(10_000_000);
+                RunCount<Eratosthenes4>(100_000_000);
                 //RunCount<Eratosthenes4>(2_147_483_591 + 1);
                 //RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 1L);
                 try
@@ -55,19 +60,41 @@ namespace FindPrimes
                     Console.WriteLine($"N={2L * (long)Array.MaxLength + 2L}, {ex.Message}");
                 }
 
-                //RunCount<Pritchard1>(1);
-                RunSearch<Pritchard1>(100);
-                RunCount<Pritchard1>(1_000);
-                RunCount<Pritchard1>(10_000);
-                RunCount<Pritchard1>(100_000);
+                RunCount<Eratosthenes5>(1);
+                RunSearch<Eratosthenes5>(100);
+                RunCount<Eratosthenes5>(10_000);
+                RunCount<Eratosthenes5>(1_000_000);
+                RunCount<Eratosthenes5>(100_000_000);
 
-                RunCount<Pritchard2>(1);
-                RunSearch<Pritchard2>(100);
-                RunCount<Pritchard2>(1_000);
-                RunCount<Pritchard2>(10_000);
-                RunCount<Pritchard2>(100_000);
-                RunCount<Pritchard2>(10_000_000);
-                //RunCount<Pritchard2>(2L * (long)Array.MaxLength + 1L); /// > 4 hours :-(
+
+                RunCountUltimatePrimesSoE(1);
+                RunSearchUltimatePrimesSoE(100);
+                RunCountUltimatePrimesSoE(1_000);
+                RunCountUltimatePrimesSoE(10_000);
+                RunCountUltimatePrimesSoE(100_000);
+                RunCountUltimatePrimesSoE(10_000_000);
+                RunCountUltimatePrimesSoE(2_147_483_591 + 1);
+                RunCountUltimatePrimesSoE(2L * (long)Array.MaxLength + 1L);
+
+                RunCount<UltimatePrimesSoEAdapter>(1);
+                RunCount<UltimatePrimesSoEAdapter>(100);
+                RunCount<UltimatePrimesSoEAdapter>(1_000);
+                RunCount<UltimatePrimesSoEAdapter>(100_000);
+
+
+                ////RunCount<Pritchard1>(1);
+                //RunSearch<Pritchard1>(100);
+                //RunCount<Pritchard1>(1_000);
+                //RunCount<Pritchard1>(10_000);
+                //RunCount<Pritchard1>(100_000);
+
+                //RunCount<Pritchard2>(1);
+                //RunSearch<Pritchard2>(100);
+                //RunCount<Pritchard2>(1_000);
+                //RunCount<Pritchard2>(10_000);
+                //RunCount<Pritchard2>(100_000);
+                //RunCount<Pritchard2>(10_000_000);
+                ////RunCount<Pritchard2>(2L * (long)Array.MaxLength + 1L); /// > 4 hours :-(
 
                 //RunSearch<EulerList>(100);
                 //RunCount<EulerList>(1_000);
@@ -124,6 +151,26 @@ namespace FindPrimes
             uut.Initialize();
             var result = uut.CountPrimes();
             Console.WriteLine($"Count of primes < {n:N0} : {result:N0} Elapsed:{sw.Elapsed.TotalMilliseconds} mSec");
+        }
+
+
+        private static void RunCountUltimatePrimesSoE(long n)
+        {
+            var sw = Stopwatch.StartNew();
+            Console.WriteLine($"class {nameof(UltimatePrimesSoE)}");
+            var result = UltimatePrimesSoE.CountTo((ulong)n);
+            Console.WriteLine($"Count of primes < {n:N0} : {result:N0} Elapsed:{sw.Elapsed.TotalMilliseconds} mSec");
+        }
+
+        private static void RunSearchUltimatePrimesSoE(long n)
+        {
+            var sw = Stopwatch.StartNew();
+            Console.WriteLine($"class {nameof(UltimatePrimesSoE)}");
+            foreach (var i in Enumerable.Range(0, 25))
+            {
+                Console.Write($"{UltimatePrimesSoE.ElementAt(i)} ");
+            }
+            Console.WriteLine($"Elapsed: {sw.Elapsed.TotalMilliseconds} mSec");
         }
     }
 }
