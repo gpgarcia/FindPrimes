@@ -3,8 +3,8 @@
 
 class SegmentedSieve : IPrime
 {
-    const int CacheSize = 12 * 1024 * 1024;
-    private List<long> _primes = [2];
+    const int CacheSize = 16 * 1024;  // i7-13700: L1 data 32k/core, L2 256k/core , L3 8M shared
+    private List<long> _primes = new(512) { 2 };
 
     public SegmentedSieve()
         : this(10)
@@ -37,17 +37,18 @@ class SegmentedSieve : IPrime
         // Divide the range [0..N) into different segments of size limit 
         long low = limit;
         long high = 2 * limit;
+        var sieve = new bool[limit / 2];
 
         // process one segment at a time
         while (low < N)
         {
-            var sieve = new bool[limit / 2];
             Array.Fill(sieve, true);
 
             high = Math.Min(high, N);
 
             // Use the previously found primes
-            for (int i = 1; i < _primes.Count; ++i)  // skip 2
+            var nbPrimes = _primes.Count;
+            for (int i = 1; i < nbPrimes; ++i)  // skip 2
             {
                 var prime = _primes[i];
                 long loLim = AdjustLowLimit(low, prime);
@@ -72,7 +73,6 @@ class SegmentedSieve : IPrime
     /// <param name="high">hightest value of range exclusive</param>
     private void SimpleSieve(long low, long start, long high)
     {
-        //var sieve = new Sieve(high - low, true);
         var sieve = new bool[(int)(high - low) / 2];
         Array.Fill(sieve, true);
 
@@ -121,19 +121,16 @@ class SegmentedSieve : IPrime
     /// <param name="prime">a prime number </param>
     /// <returns> low/prime * prime that is >= low </returns>
     /// <example> AdjustLowLimit(31,3) returns 33 </example>    
-    private static long AdjustLowLimit(long low, long prime)
+private static long AdjustLowLimit(long low, long prime)
+{
+    long loLim = low + (prime - (low % prime));
+    if ((loLim & 1) == 0) // if loLim is even
     {
-        long loLim = low - (low % prime);
-        if (loLim < low)
-        {
-            loLim += prime;
-        }
-        if ((loLim & 1) == 0) // if loLim is even
-        {
-            loLim += prime;  // make it odd 
-        }
-        return loLim;
+        loLim += prime;  // make it odd 
     }
+    return loLim;
+}
+
 
     public bool IsPrime(long n)
     {

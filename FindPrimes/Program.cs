@@ -49,8 +49,8 @@ namespace FindPrimes
                 RunCount<Eratosthenes4>(1_000_000);
                 RunCount<Eratosthenes4>(10_000_000);
                 RunCount<Eratosthenes4>(100_000_000);
-                //RunCount<Eratosthenes4>(2_147_483_591 + 1);
-                //RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 1L);
+                ////RunCount<Eratosthenes4>(2_147_483_591 + 1);
+                ////RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 1L);
                 try
                 {
                     RunCount<Eratosthenes4>(2L * (long)Array.MaxLength + 2L);
@@ -79,7 +79,7 @@ namespace FindPrimes
                 RunCount<UltimatePrimesSoEAdapter>(1);
                 RunCount<UltimatePrimesSoEAdapter>(100);
                 RunCount<UltimatePrimesSoEAdapter>(1_000);
-                RunCount<UltimatePrimesSoEAdapter>(100_000);
+                //RunCount<UltimatePrimesSoEAdapter>(100_000);
 
 
                 ////RunCount<Pritchard1>(1);
@@ -116,11 +116,12 @@ namespace FindPrimes
                 //    Console.WriteLine($"N={2L * (long)int.MaxValue + 2L}, {ex.Message}");
                 //}
 
-                //RunSearch<SegmentedSieve>(100);
-                //RunCount<SegmentedSieve>(1_000);
-                //RunCount<SegmentedSieve>(10_000);
-                //RunCount<SegmentedSieve>(10_000_000);
-                ////RunCount<SegmentedSieve>(2L * (long)int.MaxValue + 1L);
+                RunCount<SegmentedSieve>(1);
+                RunSearch<SegmentedSieve>(100);
+                RunCount<SegmentedSieve>(10_000);
+                RunCount<SegmentedSieve>(1_000_000);
+                RunCount<SegmentedSieve>(10_000_000);
+                //RunCount<SegmentedSieve>(2L * (long)int.MaxValue + 1L);
 
             }
             if (bench)

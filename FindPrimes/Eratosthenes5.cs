@@ -19,9 +19,10 @@ namespace FindPrimes;
 /// Since we are skipping even numbers, just store the odd numbers. Adjust the
 /// access to the array to divide by 2.
 /// 
+/// This version uses parallel processing to strike out multiples of prime numbers.
+/// 
 /// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Pseudocode 
 /// 
-/// TODO: https://stackoverflow.com/questions/1569393/c-how-to-make-sieve-of-atkin-incremental/20559687#20559687 
 /// </remarks>
 class Eratosthenes5 : IPrime
 {

@@ -14,33 +14,65 @@
 /// 
 class UltimatePrimesSoE : IEnumerable<ulong>
 {
-    static readonly uint NUMPRCSPCS = (uint)Environment.ProcessorCount + 1; const uint CHNKSZ = 17;
-    const int L1CACHEPOW = 14, L1CACHESZ = (1 << L1CACHEPOW), MXPGSZ = L1CACHESZ / 2; //for buffer ushort[]
-                                                                                      //the 2,3,57 factorial wheel increment pattern, (sum) 48 elements long, starting at prime 19 position
+    static readonly uint NUMPRCSPCS = (uint)Environment.ProcessorCount + 1; 
+    const uint CHNKSZ = 17;
+    const int L1CACHEPOW = 14;
+    const int L1CACHESZ = (1 << L1CACHEPOW);
+    const int MXPGSZ = L1CACHESZ / 2;   //for buffer ushort[]
+                                        //the 2,3,57 factorial wheel increment pattern, (sum) 48 elements long, starting at prime 19 position
     static readonly byte[] WHLPTRN = { 2,3,1,3,2,1,2,3,3,1,3,2,1,3,2,3,4,2,1,2,1,2,4,3,
-                                                                           2,3,1,2,3,1,3,3,2,1,2,3,1,3,2,1,2,1,5,1,5,1,2,1 }; const uint FSTCP = 11;
-    static readonly byte[] WHLPOS; static readonly byte[] WHLNDX; //to look up wheel indices from position index
+                                                                           2,3,1,2,3,1,3,3,2,1,2,3,1,3,2,1,2,1,5,1,5,1,2,1 };
+    const uint FSTCP = 11;
+    static readonly byte[] WHLPOS; 
+    static readonly byte[] WHLNDX; //to look up wheel indices from position index
     static readonly byte[] WHLRNDUP; //to look up wheel rounded up index positon values, allow for overfolw
     static readonly uint WCRC = WHLPTRN.Aggregate(0u, (acc, n) => acc + n);
-    static readonly uint WHTS = (uint)WHLPTRN.Length; static readonly uint WPC = WHTS >> 4;
-    static readonly byte[] BWHLPRMS = { 2, 3, 5, 7, 11, 13, 17 }; const uint FSTBP = 19;
+    static readonly uint WHTS = (uint)WHLPTRN.Length;
+    static readonly uint WPC = WHTS >> 4;
+    static readonly byte[] BWHLPRMS = { 2, 3, 5, 7, 11, 13, 17 };
+    const uint FSTBP = 19;
     static readonly uint BWHLWRDS = BWHLPRMS.Aggregate(1u, (acc, p) => acc * p) / 2 / WCRC * WHTS / 16;
-    static readonly uint PGSZ = MXPGSZ / BWHLWRDS * BWHLWRDS; static readonly uint PGRNG = PGSZ * 16 / WHTS * WCRC;
-    static readonly uint BFSZ = CHNKSZ * PGSZ, BFRNG = CHNKSZ * PGRNG; //number of uints even number of caches in chunk
+    static readonly uint PGSZ = MXPGSZ / BWHLWRDS * BWHLWRDS;
+    static readonly uint PGRNG = PGSZ * 16 / WHTS * WCRC;
+    static readonly uint BFSZ = CHNKSZ * PGSZ;
+    static readonly uint BFRNG = CHNKSZ * PGRNG; //number of uints even number of caches in chunk
     static readonly ushort[] MCPY; //a Master Copy page used to hold the lower base primes preculled version of the page
-    struct Wst { public ushort msk; public byte mlt; public byte xtr; public ushort nxt; }
-    static readonly byte[] PRLUT; /*Wheel Index Look Up Table */ static readonly Wst[] WSLUT; //Wheel State Look Up Table
+
+    struct Wst 
+    { 
+        public ushort msk;
+        public byte mlt;
+        public byte xtr; 
+        public ushort nxt; 
+    }
+
+    static readonly byte[] PRLUT; /*Wheel Index Look Up Table */ 
+    static readonly Wst[] WSLUT; //Wheel State Look Up Table
     static readonly byte[] CLUT; // a Counting Look Up Table for very fast counting of primes
+
+
     static int count(uint bitlim, ushort[] buf)
-    { //very fast counting
+    { 
+        //very fast counting
         if (bitlim < BFRNG)
         {
-            var addr = (bitlim - 1) / WCRC; var bit = WHLNDX[bitlim - addr * WCRC] - 1; addr *= WPC;
-            for (var i = 0; i < 3; ++i) buf[addr++] |= (ushort)((unchecked((ulong)-2) << bit) >> (i << 4));
+            var addr = (bitlim - 1) / WCRC;
+            var bit = WHLNDX[bitlim - addr * WCRC] - 1;
+            addr *= WPC;
+            for (var i = 0; i < 3; ++i)
+            {
+                buf[addr++] |= (ushort)((unchecked((ulong)-2) << bit) >> (i << 4));
+            }
         }
-        var acc = 0; for (uint i = 0, w = 0; i < bitlim; i += WCRC)
-            acc += CLUT[buf[w++]] + CLUT[buf[w++]] + CLUT[buf[w++]]; return acc;
+        var acc = 0;
+        for (uint i = 0, w = 0; i < bitlim; i += WCRC)
+        {
+            acc += CLUT[buf[w++]] + CLUT[buf[w++]] + CLUT[buf[w++]];
+        }
+        return acc;
     }
+
+
     static void cull(ulong lwi, ushort[] b)
     {
         ulong nlwi = lwi;
@@ -269,12 +301,46 @@ class UltimatePrimesSoE : IEnumerable<ulong>
     }
     public static ulong ElementAt(long n)
     {
-        if (n < BWHLPRMS.Length) return (ulong)BWHLPRMS.ElementAt((int)n);
-        long cnt = BWHLPRMS.Length; var ndx = 0UL; var cycl = 0u; var bit = 0u; IterateUntil((lwi, bfr) => {
-            var c = count(BFRNG, bfr); if ((cnt += c) < n) return false; ndx = lwi; cnt -= c; c = 0;
-            do { var w = cycl++ * WPC; c = CLUT[bfr[w++]] + CLUT[bfr[w++]] + CLUT[bfr[w]]; cnt += c; } while (cnt < n);
-            cnt -= c; var y = (--cycl) * WPC; ulong v = ((ulong)bfr[y + 2] << 32) + ((ulong)bfr[y + 1] << 16) + bfr[y];
-            do { if ((v & (1UL << ((int)bit++))) == 0) ++cnt; } while (cnt <= n); --bit; return true;
-        }); return FSTBP + ((ndx + cycl * WCRC + WHLPOS[bit]) << 1);
+        if (n < BWHLPRMS.Length)
+        {
+            return (ulong)BWHLPRMS.ElementAt((int)n);
+        }
+        long cnt = BWHLPRMS.Length;
+        var ndx = 0UL;
+        var cycl = 0u;
+        var bit = 0u; 
+        
+        IterateUntil(
+            (lwi, bfr) => 
+            {
+                var c = count(BFRNG, bfr);
+                if ((cnt += c) < n)
+                {
+                    return false; 
+                }
+                ndx = lwi;
+                cnt -= c;
+                c = 0;
+                do 
+                { 
+                    var w = cycl++ * WPC;
+                    c = CLUT[bfr[w++]] + CLUT[bfr[w++]] + CLUT[bfr[w]];
+                    cnt += c;
+                } while (cnt < n);
+                cnt -= c;
+                var y = (--cycl) * WPC;
+                ulong v = ((ulong)bfr[y + 2] << 32) + ((ulong)bfr[y + 1] << 16) + bfr[y];
+                do 
+                {
+                    if ((v & (1UL << ((int)bit++))) == 0)
+                    {
+                        ++cnt;
+                    }
+                } while (cnt <= n);
+                --bit; 
+                return true;
+            }
+        );
+        return FSTBP + ((ndx + cycl * WCRC + WHLPOS[bit]) << 1);
     }
 }
